@@ -13,22 +13,8 @@ const getProductsData = async () => {
 
 const productUlSection = document.querySelector(".productWrap");
 // render product section
-const renderPorductionSection = (data) => {
-  const renderData = data
-    .map((item, idx) => {
-      return `<li class="productCard">
-                  <h4 class="productType">新品</h4>
-                  <img
-                    src="${item.images}"
-                    alt=""
-                  />
-                  <a href="#" class="addCardBtn" data-idx="${idx}">加入購物車</a>
-                  <h3>${item.title}</h3>
-                  <del class="originPrice">NT$${item.origin_price}</del>
-                  <p class="nowPrice">NT$${item.price}</p>
-              </li>`;
-    })
-    .join("");
+const renderPorductionSection = (datas) => {
+  const renderData = createProductTemplate(datas);
   productUlSection.innerHTML = renderData;
 };
 // filte section selector
@@ -61,47 +47,8 @@ const getCartsData = async () => {
 
 const cartsSection = document.querySelector(".shoppingCart-table");
 // render carts section
-const renderCartsSection = (data) => {
-  let contentData = "";
-  let totalPrice = 0;
-
-  data.forEach((item) => {
-    totalPrice += item.product.price * item.quantity;
-    contentData += `<tr>
-              <td>
-                <div class="cardItem-title">
-                  <img src="${item.product.images}" alt="" />
-                  <p>${item.product.title}</p>
-                </div>
-              </td>
-              <td>NT$${item.product.price}</td>
-              <td>${item.quantity}</td>
-              <td>NT$${item.product.price * item.quantity}</td>
-              <td class="discardBtn" >
-                <a href="#" class="material-icons" data-id="${
-                  item.id
-                }"> clear </a>
-              </td>
-            </tr> `;
-  });
-  const titleData = `<tr>
-            <th width="40%">品項</th>
-            <th width="15%">單價</th>
-            <th width="15%">數量</th>
-            <th width="15%">金額</th>
-            <th width="15%"></th>
-          </tr>`;
-  const buttonData = `<tr>
-            <td>
-              <a href="#" class="discardAllBtn">刪除所有品項</a>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <p>總金額</p>
-            </td>
-            <td>NT$${totalPrice}</td>`;
-  const renderData = titleData + contentData + buttonData;
+const renderCartsSection = (datas) => {
+  let renderData = createCarsTemplate(datas);
   cartsSection.innerHTML = renderData;
 };
 

@@ -1,12 +1,3 @@
-// util function
-// convert date frame
-const convertDataFrame = (timestamp) =>
-  new Date(timestamp * 1000).toLocaleString("zh-TW", {
-    hour12: false,
-  });
-// convert paid: boolean to string
-const convertPiadToString = (paid) => (paid === true ? "已處理" : "未處理");
-
 let ordersData = [];
 // get orders data
 const getOrdersData = async () => {
@@ -23,32 +14,8 @@ const getOrdersData = async () => {
 // render order section
 const orderContent = document.querySelector(".orderPage-table-body");
 const renderOrderSection = (data) => {
-  let renderData = "";
-  data.forEach((order, index) => {
-    let productData = "";
-    order.products.forEach((product) => {
-      productData += `<p>${product.title} x ${product.quantity}</p>`;
-    });
-    renderData += `<tr>
-              <td>${order.id}</td>
-              <td>
-                <p>${order.user.name}</p>
-                <p>${order.user.tel}</p>
-              </td>
-              <td>${order.user.address}</td>
-              <td>${order.user.email}</td>
-              <td>
-                ${productData}
-              </td>
-              <td>${convertDataFrame(order.updatedAt)}</td>
-              <td class="orderStatus">
-                <a href="#" class="changeOrderStatus" data-idx="${index}">${convertPiadToString(order.paid)}</a>
-              </td>
-              <td>
-                <input type="button" class="delSingleOrder-Btn" data-idx="${index}" value="刪除" />
-              </td>
-            </tr>`;
-  });
+  let renderData = createOrdersTemplate(data);
+  console.log(renderData);
   orderContent.innerHTML = renderData;
 };
 
@@ -185,14 +152,5 @@ const renderC3 = (columns, colors) => {
 // initial function
 function init() {
   getOrdersData();
-  // C3.js
-  // let chart = c3.generate({
-  //   bindto: "#chart", // HTML 元素綁定
-  //   data: {
-  //     type: "pie",
-  //     columns: orderDataForC3,
-  //     colors: colorDataForC3,
-  //   },
-  // });
 }
 init();
