@@ -1,16 +1,9 @@
-// api information
-const baseUrl =
-  "https://livejs-api.hexschool.io/api/livejs/v1/customer/neillin/";
-const productUrl = "products";
-const cartsUrl = "carts";
-const orderUrl = "orders";
-
 // producttion data
 let productData = [];
 // get products data
 const getProductsData = async () => {
   try {
-    const response = await axios.get(`${baseUrl}${productUrl}`);
+    const response = await baseService.get("/products");
     productData = response.data.products;
     renderPorductionSection(productData);
   } catch (error) {
@@ -58,7 +51,7 @@ let cartsData = [];
 // get carts data
 const getCartsData = async () => {
   try {
-    const response = await axios.get(`${baseUrl}${cartsUrl}`);
+    const response = await baseService.get("/carts");
     cartsData = response.data.carts;
     renderCartsSection(cartsData);
   } catch (error) {
@@ -85,7 +78,9 @@ const renderCartsSection = (data) => {
               <td>${item.quantity}</td>
               <td>NT$${item.product.price * item.quantity}</td>
               <td class="discardBtn" >
-                <a href="#" class="material-icons" data-id="${item.id}"> clear </a>
+                <a href="#" class="material-icons" data-id="${
+                  item.id
+                }"> clear </a>
               </td>
             </tr> `;
   });
@@ -114,7 +109,7 @@ const renderCartsSection = (data) => {
 
 const patchCartsData = async (data) => {
   try {
-    const response = await axios.patch(`${baseUrl}${cartsUrl}`, data);
+    const response = await baseService.patch("/carts", data);
     console.log(response);
     getCartsData();
   } catch (error) {
@@ -125,7 +120,7 @@ const patchCartsData = async (data) => {
 
 const postCartsData = async (data) => {
   try {
-    await axios.post(`${baseUrl}${cartsUrl}`, data);
+    await baseService.post("/carts", data);
     getCartsData();
   } catch (error) {
     console.log(error.response.data.message);
@@ -165,7 +160,7 @@ productCard.addEventListener("click", function (e) {
 // delete item in carts
 const deleteCartsItem = async (id) => {
   try {
-    await axios.delete(`${baseUrl}${cartsUrl}/${id}`);
+    await baseService.delete(`/carts/${id}`);
     getCartsData();
   } catch (error) {
     console.log(error.response.data.message);
@@ -176,7 +171,7 @@ const deleteCartsItem = async (id) => {
 
 const deleteAllCartsItem = async () => {
   try {
-    await axios.delete(`${baseUrl}${cartsUrl}`);
+    await baseService.delete("/carts");
     getCartsData();
   } catch (error) {
     alert(error.response.data.message);
@@ -260,7 +255,7 @@ const checkInputDataEmpty = () => {
 // post order to backend
 const postOrderData = async (data) => {
   try {
-    await axios.post(`${baseUrl}${orderUrl}`, data);
+    await baseService.post("/orders", data);
     alert("成功送出訂單!");
   } catch (error) {
     console.log(error.response.data.message);

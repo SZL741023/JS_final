@@ -1,13 +1,3 @@
-const token = "SVqeYyIvAnM05Ou4JXdH0WGPO5H2";
-const headers = {
-  headers: {
-    authorization: token,
-  },
-};
-
-const baseUrl =
-  "https://livejs-api.hexschool.io/api/livejs/v1/admin/neillin/orders";
-
 // util function
 // convert date frame
 const convertDataFrame = (timestamp) =>
@@ -21,9 +11,8 @@ let ordersData = [];
 // get orders data
 const getOrdersData = async () => {
   try {
-    const response = await axios.get(baseUrl, headers);
+    const response = await adminService.get("");
     ordersData = response.data.orders;
-    // console.log(ordersData);
     renderOrderSection(ordersData);
     covertOrderDataForC3(ordersData);
     renderC3(orderDataForC3, colorDataForC3);
@@ -66,7 +55,7 @@ const renderOrderSection = (data) => {
 // delete one order
 const deleteOneOrder = async (id) => {
   try {
-    await axios.delete(`${baseUrl}/${id}`, headers);
+    await adminService.delete(`/${id}`);
     alert(`刪除${id}訂單`);
     getOrdersData();
   } catch (error) {
@@ -83,7 +72,7 @@ const changeOrderStatus = (id) => {
     },
   };
   try {
-    axios.put(baseUrl, orderData, headers);
+    adminService.put("", orderData);
     getOrdersData();
     alert("狀態已更新");
   } catch (error) {
@@ -105,7 +94,7 @@ orderContent.addEventListener("click", (e) => {
 // delete all orders
 const deleteAllOrders = async () => {
   try {
-    await axios.delete(`${baseUrl}`, headers);
+    await adminService.delete("", headers);
     alert("刪除全部訂單");
     getOrdersData();
   } catch (error) {
@@ -161,7 +150,6 @@ const createTop3ColumnsToC3 = (convertedArrayData) => {
     });
     top3Data.push(lastData);
   }
-  console.log(top3Data);
   return top3Data;
 };
 // create top3 color type
